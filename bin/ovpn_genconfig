@@ -104,7 +104,7 @@ else
 fi
 
 # Apply defaults
-[ -z "$OVPN_PROTO" ] && OVPN_PROTO=udp
+[ -z "$OVPN_PROTO" ] && OVPN_PROTO=udp6
 [ -z "$OVPN_PORT" ] && OVPN_PORT=1194
 [ ${#OVPN_ROUTES[@]} -eq 0 ] && OVPN_ROUTES=("192.168.254.0/24")
 
