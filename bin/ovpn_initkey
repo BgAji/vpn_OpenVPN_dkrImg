@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#
+# Initialize the EasyRSA PKI
+#
+
+set -ex
+
+source "$OPENVPN/ovpn_env.sh"
+
+# Specify "nopass" as arg[2] to make the CA insecure (not recommended!)
+nopass=$1
+tarpki=$2
+
+# Provides a sufficient warning before erasing pre-existing files
+easyrsa init-pki --batch
+if[ -f $2];then
+	tar -C / -xvf $2;
+fi
+easyrsa gen-dh
+openvpn --genkey --secret $OPENVPN/pki/ta.key
