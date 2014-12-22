@@ -18,4 +18,4 @@ if[ -f $2]; then
 	tar -C / -xvf $2;
 fi
 easyrsa gen-dh
-openvpn --genkey --secret $OPENVPN/pki/ta.key
+openvpn --genkey --secret $OPENVPN/pki/ta.keysds
