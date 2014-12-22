@@ -14,8 +14,8 @@ tarpki=$2
 
 # Provides a sufficient warning before erasing pre-existing files
 easyrsa init-pki --batch
-if[ -f $2]; then
-	tar -C / -xvf $2;
+if [ -f $tarpki ]; then
+    tar -C / -xvf $tarpki
 fi
 easyrsa gen-dh
-openvpn --genkey --secret $OPENVPN/pki/ta.keysds
+openvpn --genkey --secret $OPENVPN/pki/ta.key
