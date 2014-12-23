@@ -16,6 +16,7 @@ tarpki=$2
 easyrsa init-pki --batch
 if [ -f $tarpki ]; then
     tar -C / -xvf $tarpki
+    chown root:root $OPENVPN
 fi
 easyrsa gen-dh
 openvpn --genkey --secret $OPENVPN/pki/ta.key
