@@ -127,12 +127,17 @@ if [ -f "$conf" ]; then
     mv "$conf" "$bak"
 fi
 
+ca="ca.crt"
+if [ -f "ca+subca.pem" ]; then
+    ca="ca+subca.pem"
+fi
+
 cat > "$conf" <<EOF
 server $(getroute $OVPN_SERVER)
 verb 3
 #duplicate-cn
 key $EASYRSA_PKI/private/${OVPN_CN}.key
-ca $EASYRSA_PKI/ca.crt
+ca $EASYRSA_PKI/${ca}
 cert $EASYRSA_PKI/issued/${OVPN_CN}.crt
 dh $EASYRSA_PKI/dh.pem
 tls-auth $EASYRSA_PKI/ta.key
