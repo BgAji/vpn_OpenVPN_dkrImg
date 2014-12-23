@@ -13,10 +13,10 @@ nopass=$1
 tarpki=$2
 
 # Provides a sufficient warning before erasing pre-existing files
-easyrsa init-pki --batch
+#easyrsa init-pki --batch
 if [ -f $tarpki ]; then
     tar -C / -xvf $tarpki
-    chown root:root $OPENVPN
+    chown -R root:root $OPENVPN
 fi
 easyrsa gen-dh
 openvpn --genkey --secret $OPENVPN/pki/ta.key
