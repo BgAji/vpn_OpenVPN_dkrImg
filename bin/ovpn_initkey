@@ -18,5 +18,12 @@ if [ -f $tarpki ]; then
     tar -C / -xvf $tarpki
     chown -R root:root $OPENVPN
 fi
-easyrsa gen-dh
-openvpn --genkey --secret $OPENVPN/pki/ta.key
+
+if [ ! -f "$EASYRSA_PKI/dh.pem" ]; then
+	easyrsa gen-dh
+fi
+
+if [ ! -f "$EASYRSA_PKI/ta.key" ]; then
+	openvpn --genkey --secret $OPENVPN/pki/ta.key
+fi
+

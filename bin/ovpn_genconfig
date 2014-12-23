@@ -128,7 +128,7 @@ if [ -f "$conf" ]; then
 fi
 
 ca="ca"
-if [ -f "ca-inter.crt" ]; then
+if [ -f "$EASYRSA_PKI/ca-inter.crt" ]; then
     ca="ca-inter"
 fi
 
