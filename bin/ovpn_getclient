@@ -15,7 +15,7 @@ if [ ! -f "$EASYRSA_PKI/private/${cn}.key" ]; then
     exit 1
 fi
 
-if [ ! -f "$EASYRSA_PKI/ca-inter.crt" ]; then
+if [ -f "$EASYRSA_PKI/ca-inter.crt" ]; then
     ca="ca-inter"
 fi
 
