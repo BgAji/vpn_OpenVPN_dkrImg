@@ -27,7 +27,7 @@ if [ ! -f "$EASYRSA_PKI/ta.key" ]; then
 fi
 
 
-if [ hostname <> "" ]; then
+if [ $hostname <> "" ]; then
 	ovpn_genconfig -u hostname
 fi
 
