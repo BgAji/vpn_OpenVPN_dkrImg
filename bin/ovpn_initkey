@@ -9,6 +9,7 @@ set -ex
 # Specify "nopass" as arg[2] to make the CA insecure (not recommended!)
 nopass=$1
 tarpki=$2
+hostname=$3
 
 # Provides a sufficient warning before erasing pre-existing files
 # easyrsa init-pki --batch
@@ -23,5 +24,10 @@ fi
 
 if [ ! -f "$EASYRSA_PKI/ta.key" ]; then
 	openvpn --genkey --secret $OPENVPN/pki/ta.key
+fi
+
+
+if [ hostname <> "" ]; then
+	ovpn_genconfig -u hostname
 fi
 
