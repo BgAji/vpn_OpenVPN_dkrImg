@@ -109,7 +109,7 @@ fi
 # Apply defaults
 [ -z "$OVPN_PROTO" ] && OVPN_PROTO=udp6
 [ -z "$OVPN_PORT" ] && OVPN_PORT=1194
-[ ${#OVPN_ROUTES[@]} -eq 0 ] && OVPN_ROUTES=("192.168.254.0/24")
+[ ${#OVPN_ROUTES[@]} -eq 0 ] && OVPN_ROUTES=("10.10.10.0/24")
 
 export OVPN_SERVER OVPN_ROUTES OVPN_DEFROUTE
 export OVPN_SERVER_URL OVPN_ENV OVPN_PROTO OVPN_CN OVPN_PORT
@@ -136,13 +136,7 @@ if [ -f "$EASYRSA_PKI/ca-inter.crt" ]; then
 fi
 LDAPMODULE=""
 if [ -n "$OVPN_LDAP" ]; then
-    LDAPMODULE="plugin /usr/lib/openvpn-plugin-auth-pam.so openvpn"
-    cat > /etc/pam.d/openvpn <<EOF
-account required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
-auth required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
-password required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
-session required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
-EOF
+    LDAPMODULE="plugin /usr/lib/openvpn/openvpn-auth-ldap.so /etc/openvpn/auth/auth-ldap.conf"
 fi
 cat > "$conf" <<EOF
 server $(getroute $OVPN_SERVER)
@@ -156,6 +150,7 @@ tls-auth $EASYRSA_PKI/ta.key
 key-direction 0
 ${LDAPMODULE}
 keepalive 10 60
+comp-lzo
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.4.4"
