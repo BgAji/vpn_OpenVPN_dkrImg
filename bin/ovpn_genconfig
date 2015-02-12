@@ -75,6 +75,9 @@ while getopts ":r:s:du:cp:" opt; do
         p)
             OVPN_PUSH+=("$OPTARG")
             ;;
+        l)
+            OVPN_LDAP=1
+            ;;
         \?)
             set +x
             echo "Invalid option: -$OPTARG" >&2
@@ -147,18 +150,24 @@ persist-key
 persist-tun
 push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
-
 proto $OVPN_PROTO
 # Rely on Docker to do port mapping, internally always 1194
 port 1194
 dev tun0
 status /tmp/openvpn-status.log
-
 client-config-dir $OPENVPN/ccd
 EOF
 
 [ -n "$OVPN_CLIENT_TO_CLIENT" ] && echo "client-to-client" >> "$conf"
-
+if [ -n "$OVPN_LDAP" ] then
+    echo "plugin /usr/lib/openvpn-plugin-auth-pam.so openvpn" >> "$conf"
+    cat > /etc/pam.d/openvpn <<EOF
+account required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
+auth required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
+password required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
+session required pam_ldap.so config=/etc/openvpn/auth/pam_ldap.conf
+EOF
+fi
 # Append Routes
 for i in "${OVPN_ROUTES[@]}"; do
     # If user passed "0" skip this, assume no extra routes
