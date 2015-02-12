@@ -6,7 +6,7 @@ FROM debian:jessie
 
 MAINTAINER Kyle Manna <kyle@kylemanna.com>
 
-RUN apt-get update && apt-get install -y openvpn iptables git-core
+RUN apt-get update && apt-get install -y openvpn iptables git-core libpam-ldap
 
 # Update checkout to use tags when v3.0 is finally released
 RUN git clone https://github.com/OpenVPN/easy-rsa.git /usr/local/share/easy-rsa
